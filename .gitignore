@@ -9,4 +9,5 @@
 cmake_build
 build
 .mbedbuild
+.cache
 

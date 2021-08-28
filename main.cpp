@@ -76,7 +76,7 @@ int Hex_char_to_int(char s) {
 int main() {
     Display.start(display_loop);
     button.mode(PullUp);
-    button.rise(counter_reset);
+    button.rise(&counter_reset);
     // UART
     rn.set_baud(115200);
     rn.set_format(8, BufferedSerial::None, 1);
@@ -162,7 +162,10 @@ void Recieve_loop() {
     }
 }
 
-void counter_reset() { Counter = 0; }
+void counter_reset() {
+    Counter = 0;
+    /* wait_us(10'000'000); */
+}
 
 // Event
 void print_string(std::string str) { printf("%s", str.c_str()); }
@@ -192,20 +195,6 @@ void BLE_Setup() {
     PC_write("プライベートUUIDを設定\n\r");
     RN_write("PS,59FF01A0305E4792B287BA41E7DF33B7\r\n");
     ThisThread::sleep_for(200ms);
-    /* RN_write("PC,CF360C17E1E041378B8F5DBA634D0E6A,01,04\r\n"); // ブロードキャスト */
-    /* ThisThread::sleep_for(200ms); */
-    /* RN_write("PC,D25849BBB6804AE1B855EA9EABE8AEDB,02,04\n\r"); // 読み出し */
-    /* ThisThread::sleep_for(200ms); */
-    /* RN_write("PC,287B890FD4814806ABF7B31FE78A414C,04,04\n\r"); // 応答なし書き込み */
-    /* ThisThread::sleep_for(200ms); */
-    /* RN_write("PC,603B159624D6468AA6F46B07FF9E614D,08,04\n\r"); // 書き込み */
-    /* ThisThread::sleep_for(200ms); */
-    /* RN_write("PC,99D0CAF32E80446AB6B502BBB5EB923E,10,04\n\r"); // ノーティフィケーション */
-    /* ThisThread::sleep_for(200ms); */
-    /* RN_write("PC,45D471BC1BE145A99382069C8DC61E3F,20,04\n\r"); // インディケーション */
-    /* ThisThread::sleep_for(200ms); */
-    /* ここでは、読み出しと書き込みだけしかやらなくていいので、その二つを設定 */
-    /* ThisThread::sleep_for(200ms); */
     RN_write("PC,955CAEE350744338BD514F8945096ADE,02,04\n\r");  // 読み出しを4Byte
     ThisThread::sleep_for(200ms);
     RN_write("PC,F92DF428C4D940349F1AD8BCF3D2223D,08,04\n\r");  // 書き出しを4Byte
